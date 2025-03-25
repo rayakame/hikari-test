@@ -4,5 +4,12 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
+    "audioop-lts>=0.2.1",
+    "hikari",
+    "numpy>=2.2.4",
     "pydub>=0.25.1",
+    "python-dotenv>=1.0.1",
 ]
+
+[tool.uv.sources]
+hikari = { git = "https://github.com/rayakame/hikari.git", rev = "feature/voice-messages" }
