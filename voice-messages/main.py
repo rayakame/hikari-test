@@ -21,15 +21,15 @@ async def register_commands(event: hikari.StartingEvent) -> None:
 
     await bot.rest.set_application_commands(application=application.id, commands=commands)
 
-@bot.listen(hikari.InteractionCreateEvent)
-async def handle_interactions(event: hikari.InteractionCreateEvent) -> None:
+@bot.listen(hikari.events.CommandInteractionCreateEvent)
+async def handle_interactions(event: hikari.CommandInteractionCreateEvent) -> None:
     """Listen for slash commands being executed."""
     if not isinstance(event.interaction, hikari.CommandInteraction):
         # only listen to command interactions, no others!
         return
 
     if event.interaction.command_name == "audio":
-        waveform, length = calculate_waveform("./sample2.wav")
+        waveform, length = calculate_waveform("sample2.wav")
         await event.app.rest.create_interaction_response(
             interaction=event.interaction,
             token=event.interaction.token,
@@ -40,7 +40,7 @@ async def handle_interactions(event: hikari.InteractionCreateEvent) -> None:
         await event.app.rest.edit_interaction_voice_message_response(
             application=event.interaction.application_id,
             token=event.interaction.token,
-            attachment=hikari.File("./sample2.wav"),
+            attachment=hikari.File("sample2.wav"),
             waveform=waveform,
             duration=length
         )
@@ -81,13 +81,13 @@ async def on_message(event: hikari.events.MessageCreateEvent):
             component=component
         )
     if event.message.content.startswith("!audio"):
-        waveform, length = calculate_waveform("./sample2.wav")
+        waveform, length = calculate_waveform("sample2.wav")
         await event.message.respond(
             waveform + " " + str(length)
         )
         await event.app.rest.create_voice_message(
             channel=event.channel_id,
-            attachment=hikari.File("./sample2.wav"),
+            attachment=hikari.File("sample2.wav"),
             waveform=waveform,
             duration=length
         )
